@@ -34,22 +34,31 @@
       "Scala",
       "Scheme"
     ];
-    $( "#tags" ).autocomplete({
+    $( "#itemBox" ).autocomplete({
       source: availableTags,
       select: function (event, ui) {   //must be cleared with function parameter
           alert(ui.item.label);  //will show you the selected item
-$("#price").val(ui.item.label);
-         /* $.ajax({
-            type: 'POST',
-            url: '/Controller/Action1',  //whatever any url
-            data: {label: ui.item.label},
-            success: function(message) { if(message.data == true) ... else ... },
-            dataType: 'json'
-         }); */
-
+		  var index = $("#itemBox").index(this) + 1;
+		  alert(index);
+		  
       }
     });
-    
+    jQuery.extend(jQuery.expr[':'], {
+    focusable: function (el, index, selector) {
+        return $(el).is('a, button, :input, [tabindex]');
+    }
+});
+
+$(document).on('keypress', 'input,select', function (e) {
+    if (e.which == 13) {
+        e.preventDefault();
+        // Get all focusable elements on the page
+        var $canfocus = $(':focusable');
+        var index = $canfocus.index(this) + 1;
+        if (index >= $canfocus.length) index = 0;
+        $canfocus.eq(index).focus();
+    }
+});
     
   } );
   </script>
@@ -57,10 +66,13 @@ $("#price").val(ui.item.label);
 <body>
  
 <div class="ui-widget">
-  <label for="tags">Tags: </label>
-  <input id="tags">
-  <input id="price">
-  <button id="remove">x</button>
+	<label for="tableBox">Table: </label>
+	<input id="tableBox">
+	<label for="itemBox">Item: </label>
+	<input id="itemBox">
+	<label for="quantityBox">Quantity: </label>
+	<input id="quantityBox">
+	<button id="remove">x</button>
 </div>
  
  
