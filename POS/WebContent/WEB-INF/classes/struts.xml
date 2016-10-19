@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts  
-Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">  
-<struts>  
-<package name="default" extends="struts-default">  
-  
-<action name="login" class="com.javatpoint.LoginAction">  
-<result name="success">index.jsp</result>  
-</action>  
-  
-</package>  
+Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="default" extends="json-default">
+
+		<action name="login" class="com.javatpoint.LoginAction">
+			<result name="success">index.jsp</result>
+		</action>
+		<action name="*Action" class="com.pos.actions.JtableAction"
+			method="{1}">
+			<result type="json">add-update-items.jsp</result>
+		</action>
+		<action name="getJSONResult" class="com.pos.actions.JtableAction"
+			method="list">
+			<result type="json" />
+		</action>
+
+	</package>
 </struts>     
