@@ -57,7 +57,7 @@
         });
  
         //Load all records when page is first shown
-        $('#LoadRecordsButton').click();
+       
 	});
 </script>
 </head>
