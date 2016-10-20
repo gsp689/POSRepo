@@ -438,7 +438,7 @@ THE SOFTWARE.
 
                     //Show the error message if server returns error
                     if (data.result != 'OK') {
-                        self._showError(data.Message);
+                        self._showError(data.message);
                         return;
                     }
 
@@ -816,7 +816,7 @@ THE SOFTWARE.
                 async: false,
                 success: function (data) {
                     if (data.result != 'OK') {
-                        self._showError(data.Message);
+                        self._showError(data.message);
                         return;
                     }
 
@@ -1969,6 +1969,7 @@ THE SOFTWARE.
                                     self._setEnabledOfDialogButton($saveButton, false, self.options.messages.saving);
                                     self._saveAddRecordForm($addRecordForm, $saveButton);
                                 }
+                                self._$addRecordDiv.dialog('close');
                             }
                         }],
                 close: function () {
@@ -2042,7 +2043,7 @@ THE SOFTWARE.
                 $.param(options.record),
                 function (data) {
                     if (data.result != 'OK') {
-                        self._showError(data.Message);
+                        self._showError(data.message);
                         options.error(data);
                         return;
                     }
@@ -2140,7 +2141,7 @@ THE SOFTWARE.
                 function (data) {
                     
                     if (data.result != 'OK') {
-                        self._showError(data.Message);
+                        self._showError(data.message);
                         self._setEnabledOfDialogButton($saveButton, true, self.options.messages.save);
                         return;
                     }
@@ -2324,7 +2325,7 @@ THE SOFTWARE.
                 $.param(options.record),
                 function (data) {
                     if (data.result != 'OK') {
-                        self._showError(data.Message);
+                        self._showError(data.message);
                         options.error(data);
                         return;
                     }
@@ -2460,7 +2461,7 @@ THE SOFTWARE.
                 function (data) {
                     //Check for errors
                     if (data.result != 'OK') {
-                        self._showError(data.Message);
+                        self._showError(data.message);
                         self._setEnabledOfDialogButton($saveButton, true, self.options.messages.save);
                         return;
                     }
@@ -2904,7 +2905,7 @@ THE SOFTWARE.
                     if (data.result != 'OK') {
                         $row.data('deleting', false);
                         if (error) {
-                            error(data.Message);
+                            error(data.message);
                         }
 
                         return;

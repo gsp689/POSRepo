@@ -11,7 +11,8 @@ public class JtableAction {
 	private List<Student> records = new ArrayList<Student>();
 	private String result;
 
-	private Student record;
+	private String message;
+	
 	
 	public String list() {
 		// Add data to Student list
@@ -43,7 +44,7 @@ public class JtableAction {
 		records.add(new Student(7, "Jamil", "ECE", "789@gmail.com"));
 		records.add(new Student(8, "Mahes", "ECE", "123@gmail.com"));
 		records.add(new Student(9, "Lourde", "IT", "xyz@gmail.com"));*/
-		record=new Student(112, "asd", "asdw", "asdsad");
+		
 		result = "OK";
 
 		return Action.SUCCESS;
@@ -67,7 +68,7 @@ public class JtableAction {
 	
 	public String create() {
 		// Add data to Student list
-	/*	records.add(new Student(1, "Haripriya", "IT", "xyz@xyz.com"));
+		records.add(new Student(1, "Haripriya", "IT", "xyz@xyz.com"));
 		records.add(new Student(2, "Dinesh", "ECE", "xyz@gmail.com"));
 		records.add(new Student(3, "Prabhu", "MECH", "abc@gmail.com"));
 		records.add(new Student(4, "Badru", "ECE", "efg@gmail.com"));
@@ -75,10 +76,10 @@ public class JtableAction {
 		records.add(new Student(6, "Nilafar nisha", "CSC", "123@gmail.com"));
 		records.add(new Student(7, "Jamil", "ECE", "789@gmail.com"));
 		records.add(new Student(8, "Mahes", "ECE", "123@gmail.com"));
-		records.add(new Student(9, "Lourde", "IT", "xyz@gmail.com"));*/
+		records.add(new Student(9, "Lourde", "IT", "xyz@gmail.com"));
 		
-		
-		result = "OK";
+		setMessage("Hello Issue");
+		result = "ERROR";
 
 		return Action.SUCCESS;
 	}
@@ -92,5 +93,13 @@ public class JtableAction {
 
 	public void setResult(String result) {
 		this.result = result;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }
