@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 
 <script>
+
 $(document).ready(function(){
 	var index = 1;
 	$(".addCF").click(function(){
@@ -20,15 +21,13 @@ $(document).ready(function(){
 });
 
 
+
 function deleteRow(r) {
     var i = r.parentNode.parentNode.rowIndex;
     document.getElementById("myTable").deleteRow(i);
    
     arrangeSno();
 }
-
-
-
 
 function arrangeSno()
 
@@ -41,15 +40,33 @@ function arrangeSno()
     for(var i=0; i<no_of_rows-1; i++){
 		var x = i+1;
         var inner = "<input id=\"txtTable"+x+"\" value=\""+x+"\">";
-    	alert(inner);
+    	/* alert(inner); */
  		tblObj.rows[i+1].cells[0].innerHTML = inner;
     }
 
 }
+
+
+function myAlert(){
+	 var tblObj = document.getElementById("myTable");
+	 var itemCode = document.getElementById("itemCode").value;
+	    var no_of_rows = tblObj.rows.length;
+	    alert(itemCode);
+	    for(var i=0; i<no_of_rows-1; i++){
+	    	var inner = tblObj.rows[i+1].cells[1].innerHTML;
+	    	 alert(inner);
+	    	 if (inner.match("value="+itemCode+"")) {
+	    		 alert(Exist);
+	    		}
+	    	
+		
+	    }
+}
 function insertRow(e,textArea){
-			
+	
 			var code = (e.keyCode ? e.keyCode : e.which);
 			if(code == 13) { //Enter keycode
+				myAlert();
 				var tableNumber = document.getElementById("tableNumber").value;
 				var itemCode = document.getElementById("itemCode").value;
 				var quantity = document.getElementById("quantity").value;
@@ -94,11 +111,23 @@ function insertRow(e,textArea){
 
 }
 
+function tableNumberPressed(e,textArea){
+	if (e.which == 13) {
+		alert(document.getElementById("tableNumber").value);
+	}
+}
+
+function itemCodePressed(e,textArea){
+	if (e.which == 13) {
+		
+		alert(document.getElementById("itemCode").value);
+	}
+}
 </script>
 </head>
 <body>
-<input type="text" class="code" id="tableNumber"  value="" placeholder="Table"  /> &nbsp;
-<input type="text" class="code" id="itemCode"  value="" placeholder="Item"  /> &nbsp;
+<input type="text" class="code" id="tableNumber"  value="" placeholder="Table"  onkeypress="tableNumberPressed(event, this)"/> &nbsp;
+<input type="text" class="code" id="itemCode"  value="" placeholder="Item"  onkeypress="itemCodePressed(event, this)"/> &nbsp;
 <input type="text" class="addCF" id="quantity"  value="" placeholder="Input Value" onkeypress="insertRow(event, this)" /> &nbsp;
 <hr>
 
