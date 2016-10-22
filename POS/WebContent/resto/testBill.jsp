@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Billing Console</title>
 
 <script>
 $(document).ready(function(){
@@ -26,7 +26,7 @@ $(document).ready(function(){
 
 function deleteRow(r) {
     var i = r.parentNode.parentNode.rowIndex;
-    document.getElementById(document.getElementById("tableNumber")).deleteRow(i);
+    document.getElementById(document.getElementById("tableNumber").value).deleteRow(i);
    
     arrangeSno();
 }
@@ -35,7 +35,7 @@ function arrangeSno()
 
 {
 	
-    var tblObj = document.getElementById(document.getElementById("tableNumber"));
+    var tblObj = document.getElementById(document.getElementById("tableNumber").value);
 
     var no_of_rows = tblObj.rows.length;
 
@@ -57,7 +57,7 @@ function hideAllTables(){
 
 function displayTable(){
 	var allTables = getAllTables();
-	alert(allTables.length);
+	//alert(allTables.length);
 	for (i = 0; i < allTables.length; i++) {
 		allTables[i].style.display = "none";
 	}
@@ -74,9 +74,11 @@ function itemCodeExist(){
 	    for(var i=0; i<no_of_rows-1; i++){
 	    	var inner = tblObj.rows[i+1].cells[1].firstChild.value;
 	    	
-	    	 var stringToTest = "value=\""+itemCode+"";
 	    	 if (inner == itemCode) {
-	    		 tblObj.rows[i+1].cells[2].firstChild.value = parseInt(itemQuantity) + parseInt(tblObj.rows[i+1].cells[2].firstChild.value);
+	    	 var value = parseInt(itemQuantity) + parseInt(tblObj.rows[i+1].cells[2].firstChild.value);
+	    	var innerString = "<input id=\"txtQuantity"+i+"\" value=\""+value+"\">";
+	    	// var stringToTest = "value=\""+itemCode+"";
+	    		 tblObj.rows[i+1].cells[2].innerHTML = innerString;
 	    		 return true;
 	    		 
 	    		}
@@ -139,49 +141,78 @@ function insertRow(e,textArea){
 			/* var tbl= document.getElementById(document.getElementById("tableNumber").value);
 			alert("god is great");
 			alert(tbl.innerHTML); */
-			saveSettings();
+			
+			
+			var code = (e.keyCode ? e.keyCode : e.which);
+			if (code == 13 ||code== 9 ){
+				document.getElementById("itemCode").value="";
+				document.getElementById("quantity").value="";
+				document.getElementById("itemCode").focus();
+			}
+			
+			
+			
+			
 
 }
 
 function tableNumberPressed(e,textArea){
-	if (e.which == 13) {
-		alert(document.getElementById("tableNumber").value);
+	var code = (e.keyCode ? e.keyCode : e.which);
+	//alert(code);
+	if (code == 13 ) {
+		//alert(document.getElementById("tableNumber").value);
+		document.getElementById("itemCode").focus();
+		displayTable();
+	}
+	if (code == 9 ) {
 		displayTable();
 	}
 }
 
 function itemCodePressed(e,textArea){
-	if (e.which == 13) {
-		
-		alert(document.getElementById("itemCode").value);
+	var code = (e.keyCode ? e.keyCode : e.which);
+	if (code == 13 ) {
+		document.getElementById("quantity").focus();
 	}
+	
 }
 
 
 function loadSettings() {
-	alert("hiii");
-	alert("loading");
-	document.getElementById("1").innerHTML = localStorage.getItem(t1); 
-	document.getElementById("2").innerHTML = localStorage.getItem(t2); 
+	
+	//alert("loading");
+	
 }
 
 function saveSettings() {
-	alert("saving");
-    var t1 = document.getElementById("1").innerHTML;
+	//alert("saving");
+    var t1 = document.getElementById("1").rows[1].cells[2].innerHTML;
     var t2 = document.getElementById("2").innerHTML;
 
+    //alert(t1);
     localStorage.setItem("t1", t1);
     localStorage.setItem("t2", t2);
 }
 
+
+function printBody(){
+	
+	alert(document.getElementsByTagName("BODY")[0].innerHTML);
+	request.setAttribute("name",document.getElementsByTagName("BODY")[0].innerHTML);
+	document.forms[0].action = "product";
+    document.forms[0].submit();
+	
+}
 </script>
 </head>
+
 <body onload="loadSettings()">
 
 
 <input type="text" class="code" id="tableNumber"  value="" placeholder="Table"  onkeypress="tableNumberPressed(event, this)"/> &nbsp;
 <input type="text" class="code" id="itemCode"  value="" placeholder="Item"  onkeypress="itemCodePressed(event, this)"/> &nbsp;
 <input type="text" class="addCF" id="quantity"  value="" placeholder="Quantity" onkeypress="insertRow(event, this)" /> &nbsp;
+<input type="button" value="print" onclick="printBody()">
 <hr>
 
 <table id="1" style="display:none" class="myTable">
@@ -204,5 +235,6 @@ function saveSettings() {
         
         
 </table>
+
 </body>
 </html>
