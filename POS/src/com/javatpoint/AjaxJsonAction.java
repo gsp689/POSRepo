@@ -1,57 +1,72 @@
 package com.javatpoint;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.gson.Gson;
 import com.opensymphony.xwork2.Action;
+import com.pos.models.Order;
+import com.pos.models.OrderItem;
+import com.pos.models.Table;
 
 public class AjaxJsonAction implements Action{
 
-	private Map<String, String> stateMap = new LinkedHashMap<String, String>();
+	private String tableData = new String();
 	private String dummyMsg;
 	//Parameter from Jquery
-	private String countryName;
+	private String tableNumber;
 
 	public String execute() {
-	        if (countryName.equals("India")) {
-	                stateMap.put("1", "Kerala");
-	                stateMap.put("2", "Tamil Nadu");
-	                stateMap.put("3", "Jammu Kashmir");
-	                stateMap.put("4", "Assam");
-	        } else if (countryName.equals("US")) {
-	                stateMap.put("1", "Georgia");
-	                stateMap.put("2", "Utah");
-	                stateMap.put("3", "Texas");
-	                stateMap.put("4", "New Jersey");
-	        } else if (countryName.equals("Select Country")) {
-	                stateMap.put("1", "Select State");
-	        }
-	        dummyMsg = "Ajax action Triggered";
-	        return SUCCESS;
+		Table t = new Table();
+    	Order o = new Order();
+    	OrderItem oi = new OrderItem();
+    	ArrayList orderItems = new ArrayList<OrderItem>();
+    	
+    	oi.setItemCode(1);
+    	oi.setItemName("orderItem1");
+    	oi.setItemPrice(10);
+    	oi.setQuantity(3);
+    	
+    	orderItems.add(oi);
+    	orderItems.add(oi);
+    	orderItems.add(oi);
+    	
+    	o.setOrderItems(orderItems);
+    	ArrayList<Order> orders = new ArrayList<>();
+    	orders.add(o);
+    	orders.add(o);
+    	t.setOrders(orders);
+    	Gson gson = new Gson();
+    	tableData = gson.toJson(t);
+    	System.out.println(tableData);
+        dummyMsg = "Ajax action Triggered";
+        return SUCCESS;
 	}
 
-	public Map<String, String> getStateMap() {
-	        return stateMap;
-	}
 
 	public String getDummyMsg() {
 	        return dummyMsg;
-	}
-
-	public String getCountryName() {
-	        return countryName;
-	}
-
-	public void setStateMap(Map<String, String> stateMap) {
-	        this.stateMap = stateMap;
 	}
 
 	public void setDummyMsg(String dummyMsg) {
 	        this.dummyMsg = dummyMsg;
 	}
 
-	public void setCountryName(String countryName) {
-	        this.countryName = countryName;
+	public String getTableNumber() {
+		return tableNumber;
+	}
+
+	public void setTableNumber(String tableNumber) {
+		this.tableNumber = tableNumber;
+	}
+
+	public String getTableData() {
+		return tableData;
+	}
+
+	public void setTableData(String tableData) {
+		this.tableData = tableData;
 	}
 
 }

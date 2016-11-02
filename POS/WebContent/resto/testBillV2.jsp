@@ -14,13 +14,52 @@ $(document).ready(function() {
 			tableNumber : tableNumber
 	      }, function(jsonResponse) {
 	        $('#ajaxResponse').text(jsonResponse.dummyMsg);
-	        var select = $('#states');
-	        select.find('option').remove();
-	        $.each(jsonResponse.stateMap, function(key, value) {
-	          $('<option>').val(key).text(value).appendTo(select);
-	        });
+	        var tableData = jsonResponse.tableData;
+	       alert(tableData);
+	    var tableObject = $.parseJSON(tableData); //Only if not already an object
+	    //alert(jsonObject);
+	   
+	    $.each(tableObject.orders, function (i, ordersObject) {
+	    	var orderTotal= 0;
+	    	 $('<tr>').html(
+		    	        "<td>orders"+i+"</td>").appendTo('#myTable');
+	        $.each(ordersObject.orderItems, function (i, orderItemsObject) {
+	        	orderTotal = orderTotal + orderItemsObject.itemPrice;
+		       // alert(orderItemsObject.quantity);
+		        $('<tr>').html(
+		    	        "<td>" + i + "</td><td>" + orderItemsObject.itemName + "</td><td>" + orderItemsObject.quantity + "</td><td>" + orderItemsObject.itemPrice + "</td><td><input class='del' type='button' value='Delete'/></td>").appendTo('#myTable');
+		       
+		    });
+	        $('<tr>').html(
+	    	        "<td></td><td></td><td>Total</td><td>" + orderTotal + "</td><td><input class='print' type='button' value='Print'/></td>").appendTo('#myTable');
+	    });
+
 	      });
 	});//tableNumber
+	
+	$("#myTable").on('click', '.del', function(){
+		$(this).closest('tr').remove();
+		});//removeButton
+	
+	$('#quantity').keypress(function(event) {
+		if(event.which == 13) {
+		alert("record added and displayed");
+		var tableNumber = $('#tableNumber').val();
+		$.getJSON('ajaxAction', {
+			tableNumber : tableNumber
+	      }, function(jsonResponse) {
+	        $('#ajaxResponse').text(jsonResponse.dummyMsg);
+	        var tableData = jsonResponse.tableData;
+	       alert(tableData);
+	       $.each(tableData.orders, function(i, item) {
+	    	   $.each(tableData.orders[i].orderItems, function(j, orderItem) {
+	    	    $('<tr>').html(
+	    	        "<td>" + i + "</td><td>" + orderItem[0].itemName + "</td><td>" + orderItem[0].quantity + "</td><td>" + orderItem[0].itemPrice + "</td>").appendTo('#myTable');
+	    	   })
+	    	})
+	      });
+		}
+	});
 	
 	
 	
@@ -34,7 +73,7 @@ $(document).ready(function() {
 	<input type="text" class="addCF" id="quantity" value=""	placeholder="Quantity"/> &nbsp;
 	<input type="button" value="print">
 	<hr>
-	<table id="myTable" style="display:none" class="myTable">
+	<table id="myTable"  class="myTable" border="1" align="center" cellspacing="">
         <th>Sr.No</th>
         <th>Item</th>
         <th>Quantity</th>

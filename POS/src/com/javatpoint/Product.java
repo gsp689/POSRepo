@@ -1,4 +1,4 @@
-    package com.javatpoint;
+package com.javatpoint;
 
 import java.util.ArrayList;
 
@@ -51,7 +51,7 @@ public class Product {
     	orders.add(o);
     	t.setOrders(orders);
     	Gson gson = new Gson();
-    	String jsonInString = gson.toJson(t);
+    	String jsonInString = gson.toJson(o);
     	System.out.println(jsonInString);
 
 	}
