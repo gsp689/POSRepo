@@ -6,6 +6,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Billing Console</title>
 <script src="js/jquery-1.8.2.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 $(document).ready(function() {
 	$('#tableNumber').focusout(function(event) {
@@ -59,18 +61,29 @@ $(document).ready(function() {
 	    	})
 	      });
 		}
-	});
-	
-	
+	});//quantity
+	 var availableItems = [
+	        		      "tea",
+	        		      "coffee",
+	        		      "vmr",
+	        		      "cmr"
+	        		      
+	        		    ];
+	  $( function() {
+		   
+		    $( "#itemCode" ).autocomplete({
+		      source: availableItems
+		    });
+		  } );//autocompleteItemBox
 	
 	
 });
 </script>
 </head>
 <body>
-	<input type="text" class="code" id="tableNumber" value="" placeholder="Table"  />&nbsp;
+	<input type="text" class="tableNumber" id="tableNumber" value="" placeholder="Table"  />&nbsp;
 	<input type="text" class="code" id="itemCode" value="" placeholder="Item"/> &nbsp;
-	<input type="text" class="addCF" id="quantity" value=""	placeholder="Quantity"/> &nbsp;
+	<input type="text" class="quantity" id="quantity" value=""	placeholder="Quantity"/> &nbsp;
 	<input type="button" value="print">
 	<hr>
 	<table id="myTable"  class="myTable" border="1" align="center" cellspacing="">
