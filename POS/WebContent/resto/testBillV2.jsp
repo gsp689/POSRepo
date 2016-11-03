@@ -11,20 +11,21 @@
 <script>
 $(document).ready(function() {
 	$('#tableNumber').focusout(function(event) {
+		$('#myTable tbody').remove();
 		var tableNumber = $('#tableNumber').val();
 		$.getJSON('ajaxAction', {
 			tableNumber : tableNumber
 	      }, function(jsonResponse) {
 	        $('#ajaxResponse').text(jsonResponse.dummyMsg);
 	        var tableData = jsonResponse.tableData;
-	       alert(tableData);
-	    var tableObject = $.parseJSON(tableData); //Only if not already an object
+		    var tableObject = $.parseJSON(tableData); //Only if not already an object
 	    //alert(jsonObject);
 	   
 	    $.each(tableObject.orders, function (i, ordersObject) {
+	    	var OrderId = ordersObject.id;
 	    	var orderTotal= 0;
-	    	 $('<tr>').html(
-		    	        "<td>orders"+i+"</td>").appendTo('#myTable');
+	    	 $('<tr>').html("<td class='orderNumber'>orders"+i+"</td>").appendTo('#myTable');
+	    	 $('<tr>').html("<td>Sr No.</td><td>Item Name</td><td>Quantity</td><td>Price</td><td>Action</td>").appendTo('#myTable');
 	        $.each(ordersObject.orderItems, function (i, orderItemsObject) {
 	        	orderTotal = orderTotal + orderItemsObject.itemPrice;
 		       // alert(orderItemsObject.quantity);
@@ -39,16 +40,40 @@ $(document).ready(function() {
 	      });
 	});//tableNumber
 	
-	$("#myTable").on('click', '.del', function(){
+	 $("#myTable").on('click', '.del', function(){
 		$(this).closest('tr').remove();
-		});//removeButton
+		var tableNumber = $('#tableNumber').val();
+		var itemTobeDeleted = $(this).closest('tr').find("td:eq(1)").text();
+		var orderNumber = $(this).parents("").text();
+		$.getJSON('ajaxAction', {
+			tableNumber : tableNumber,
+			operation	: "remove",
+			itemTobeDeleted	:itemTobeDeleted,
+			orderNumber	: orderNumber
+	      }, function(jsonResponse) {
+	        $('#ajaxResponse').text(jsonResponse.dummyMsg);
+	        var tableData = jsonResponse.tableData;
+	       $.each(tableData.orders, function(i, item) {
+	    	   $.each(tableData.orders[i].orderItems, function(j, orderItem) {
+	    	    $('<tr>').html(
+	    	        "<td>" + i + "</td><td>" + orderItem[0].itemName + "</td><td>" + orderItem[0].quantity + "</td><td>" + orderItem[0].itemPrice + "</td>").appendTo('#myTable');
+	    	   })
+	    	})
+	      });
+		}); //removeButton
 	
+		
 	$('#quantity').keypress(function(event) {
 		if(event.which == 13) {
 		alert("record added and displayed");
 		var tableNumber = $('#tableNumber').val();
+		var itemCode = $('#itemCode').val();
+		var quantity = $('#quantity').val();
 		$.getJSON('ajaxAction', {
-			tableNumber : tableNumber
+			tableNumber : tableNumber,
+			operation	: "add",
+			quantity	: quantity,
+			itemCode	: itemCode
 	      }, function(jsonResponse) {
 	        $('#ajaxResponse').text(jsonResponse.dummyMsg);
 	        var tableData = jsonResponse.tableData;
@@ -62,6 +87,7 @@ $(document).ready(function() {
 	      });
 		}
 	});//quantity
+	
 	 var availableItems = [
 	        		      "tea",
 	        		      "coffee",
