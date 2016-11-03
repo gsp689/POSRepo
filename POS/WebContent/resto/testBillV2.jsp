@@ -19,10 +19,8 @@ $(document).ready(function() {
 	        $('#ajaxResponse').text(jsonResponse.dummyMsg);
 	        var tableData = jsonResponse.tableData;
 		    var tableObject = $.parseJSON(tableData); //Only if not already an object
-	    //alert(jsonObject);
-	   
 	    $.each(tableObject.orders, function (i, ordersObject) {
-	    	var OrderId = ordersObject.id;
+	    	var OrderId = ordersObject.orderId;
 	    	var orderTotal= 0;
 	    	 $('<tr>').html("<td class='orderNumber'>orders"+i+"</td>").appendTo('#myTable');
 	    	 $('<tr>').html("<td>Sr No.</td><td>Item Name</td><td>Quantity</td><td>Price</td><td>Action</td>").appendTo('#myTable');
@@ -30,7 +28,7 @@ $(document).ready(function() {
 	        	orderTotal = orderTotal + orderItemsObject.itemPrice;
 		       // alert(orderItemsObject.quantity);
 		        $('<tr>').html(
-		    	        "<td>" + i + "</td><td>" + orderItemsObject.itemName + "</td><td>" + orderItemsObject.quantity + "</td><td>" + orderItemsObject.itemPrice + "</td><td><input class='del' type='button' value='Delete'/></td>").appendTo('#myTable');
+		    	        "<td>" + i + "</td><td>" + orderItemsObject.itemName + "</td><td>" + orderItemsObject.quantity + "</td><td>" + orderItemsObject.itemPrice + "</td><td><input class='"+OrderId+"' type='button' value='Delete' id='del'/></td>").appendTo('#myTable');
 		       
 		    });
 	        $('<tr>').html(
@@ -40,28 +38,44 @@ $(document).ready(function() {
 	      });
 	});//tableNumber
 	
-	 $("#myTable").on('click', '.del', function(){
+	 $("#myTable").on('click', "#del", function(){
 		$(this).closest('tr').remove();
 		var tableNumber = $('#tableNumber').val();
 		var itemTobeDeleted = $(this).closest('tr').find("td:eq(1)").text();
-		var orderNumber = $(this).parents("").text();
+		var orderNumber =  $(this).attr('class');
 		$.getJSON('ajaxAction', {
 			tableNumber : tableNumber,
 			operation	: "remove",
 			itemTobeDeleted	:itemTobeDeleted,
 			orderNumber	: orderNumber
 	      }, function(jsonResponse) {
-	        $('#ajaxResponse').text(jsonResponse.dummyMsg);
-	        var tableData = jsonResponse.tableData;
-	       $.each(tableData.orders, function(i, item) {
-	    	   $.each(tableData.orders[i].orderItems, function(j, orderItem) {
-	    	    $('<tr>').html(
-	    	        "<td>" + i + "</td><td>" + orderItem[0].itemName + "</td><td>" + orderItem[0].quantity + "</td><td>" + orderItem[0].itemPrice + "</td>").appendTo('#myTable');
-	    	   })
-	    	})
+	    	  $('#myTable tbody').remove();
+		        $('#ajaxResponse').text(jsonResponse.dummyMsg);
+		        var tableData = jsonResponse.tableData;
+			    var tableObject = $.parseJSON(tableData); //Only if not already an object
+		    $.each(tableObject.orders, function (i, ordersObject) {
+		    	var OrderId = ordersObject.orderId;
+		    	var orderTotal= 0;
+		    	 $('<tr>').html("<td class='orderNumber'>orders"+i+"</td>").appendTo('#myTable');
+		    	 $('<tr>').html("<td>Sr No.</td><td>Item Name</td><td>Quantity</td><td>Price</td><td>Action</td>").appendTo('#myTable');
+		        $.each(ordersObject.orderItems, function (i, orderItemsObject) {
+		        	orderTotal = orderTotal + orderItemsObject.itemPrice;
+			       // alert(orderItemsObject.quantity);
+			        $('<tr>').html(
+			    	        "<td>" + i + "</td><td>" + orderItemsObject.itemName + "</td><td>" + orderItemsObject.quantity + "</td><td>" + orderItemsObject.itemPrice + "</td><td><input class='"+OrderId+"' type='button' value='Delete' id='del'/></td>").appendTo('#myTable');
+			       
+			    });
+		        $('<tr>').html(
+		    	        "<td></td><td></td><td>Total</td><td>" + orderTotal + "</td><td><input class='print' type='button' value='Print'/></td>").appendTo('#myTable');
+		    });
 	      });
 		}); //removeButton
 	
+		$('#tableNumber').keypress(function(event) {
+			if(event.which == 13) {
+				
+			}
+		});
 		
 	$('#quantity').keypress(function(event) {
 		if(event.which == 13) {
@@ -75,15 +89,25 @@ $(document).ready(function() {
 			quantity	: quantity,
 			itemCode	: itemCode
 	      }, function(jsonResponse) {
-	        $('#ajaxResponse').text(jsonResponse.dummyMsg);
-	        var tableData = jsonResponse.tableData;
-	       alert(tableData);
-	       $.each(tableData.orders, function(i, item) {
-	    	   $.each(tableData.orders[i].orderItems, function(j, orderItem) {
-	    	    $('<tr>').html(
-	    	        "<td>" + i + "</td><td>" + orderItem[0].itemName + "</td><td>" + orderItem[0].quantity + "</td><td>" + orderItem[0].itemPrice + "</td>").appendTo('#myTable');
-	    	   })
-	    	})
+	    	  $('#myTable tbody').remove();
+		        $('#ajaxResponse').text(jsonResponse.dummyMsg);
+		        var tableData = jsonResponse.tableData;
+			    var tableObject = $.parseJSON(tableData); //Only if not already an object
+		    $.each(tableObject.orders, function (i, ordersObject) {
+		    	var OrderId = ordersObject.orderId;
+		    	var orderTotal= 0;
+		    	 $('<tr>').html("<td class='orderNumber'>orders"+i+"</td>").appendTo('#myTable');
+		    	 $('<tr>').html("<td>Sr No.</td><td>Item Name</td><td>Quantity</td><td>Price</td><td>Action</td>").appendTo('#myTable');
+		        $.each(ordersObject.orderItems, function (i, orderItemsObject) {
+		        	orderTotal = orderTotal + orderItemsObject.itemPrice;
+			       // alert(orderItemsObject.quantity);
+			        $('<tr>').html(
+			    	        "<td>" + i + "</td><td>" + orderItemsObject.itemName + "</td><td>" + orderItemsObject.quantity + "</td><td>" + orderItemsObject.itemPrice + "</td><td><input class='"+OrderId+"' type='button' value='Delete' id='del'/></td>").appendTo('#myTable');
+			       
+			    });
+		        $('<tr>').html(
+		    	        "<td></td><td></td><td>Total</td><td>" + orderTotal + "</td><td><input class='print' type='button' value='Print'/></td>").appendTo('#myTable');
+		    });
 	      });
 		}
 	});//quantity

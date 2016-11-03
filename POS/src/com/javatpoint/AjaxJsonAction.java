@@ -35,6 +35,7 @@ public class AjaxJsonAction implements Action{
     	o.setOrderItems(orderItems);
     	ArrayList<Order> orders = new ArrayList<>();
     	orders.add(o);
+    	o.setOrderId(1);
     	orders.add(o);
     	t.setOrders(orders);
     	Gson gson = new Gson();
